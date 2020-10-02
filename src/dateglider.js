@@ -175,7 +175,7 @@
     }
     /* function repository - END */
  
-    $.fn.dateglider = function(  ) {
+    $.fn.dateglider = function( options ) {
  
         // Default options
         var settings = $.extend({
