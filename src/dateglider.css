@@ -1,0 +1,82 @@
+.date-glider {
+    display: block;
+}
+.date-glider .dg-content {
+    display: block;
+    box-sizing: border-box;
+}
+.date-glider .dg-header {
+    display: block;
+    font-size: 0.79em;
+    color: rgba(0,0,0,0.7);
+    text-transform: capitalize;
+}
+.date-glider .dg-header > span {
+    margin: 0 4px;
+}
+.date-glider .dg-body {
+    display: flex;
+}
+.date-glider .dg-body .dg-slider {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+.date-glider .dg-body .dg-slider > .dg-slider-nav {
+    display: inline-block;
+    height: 28px;
+    line-height: 28.9px;
+    width: 28px;
+    background-color: #fff;
+    border: 1px solid #dadada;
+    border-radius: 100%;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.date-glider .dg-body .dg-slider > .dg-slider-nav:hover {
+    box-shadow: 0 0 3px #dadada;
+    background-color: #efefef;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides-container {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 10px;
+    overflow: hidden;
+    position: relative;
+    min-height: 28px;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    transition: all 0.3s ease-in-out;
+    top: 0;
+    margin: 0;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li {
+    display: inline-block;
+    text-align: center;
+    padding: 0 5px;
+    cursor: pointer;
+    width: 19px;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li > small {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.58em;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li > span {
+    display: block;
+    font-weight: 800;
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li.disabled > small {
+    color: rgba(0,0,0,0.8);
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li.disabled > span {
+    color: rgba(0,0,0,0.3);
+}
+.date-glider .dg-body .dg-slider .dg-slider-slides > li.active > small, .date-glider .dg-body .dg-slider .dg-slider-slides > li.active > span {
+    color: #d00 !important;
+} 

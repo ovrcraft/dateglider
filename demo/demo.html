@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Date Glider</title>
+        
+        <link rel="stylesheet" href="../src/dateglider.css">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="../src/dateglider.js"></script>
+    </head>
+    <body>
+        <div class="date-glider" id="date-glider-1">
+        </div>
+    </body>
+</html>
+
+<script>
+    var options = {
+        header: true,
+        datesFilter: true,
+        availableDates: [
+            {date: '2020-10-02', message: []},
+            {date: '2020-10-03', message: []},
+            {date: '2020-10-05', message: []}
+        ]
+    };
+
+    var dg = $('#date-glider-1').dateglider(options);
+    dg.selectDate('2020-10-05');
+</script>
