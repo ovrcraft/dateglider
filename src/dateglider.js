@@ -57,7 +57,7 @@
     }
     
     /* function to update the date slider */
-    function dateSliderUpdate(elem, options, middleDay='') {
+    function dateSliderUpdate(elem, options, middleDay='', setActive) {
        
         /* variable init */
         var days = 10;
@@ -69,7 +69,7 @@
         var markedForRemoval = [];
         var scrollBack = false;
         var today = new Date();
-        var setActive = false
+        var setActive = typeof setActive=='undefined'?false:setActive;
         /* variable init - END */
         
         /* checking run-type */
@@ -128,21 +128,23 @@
                     $(elem).find('.dg-slider-slides').append(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
                 }
             } else {
-                $(elem).find('.dg-slider-slides > li').each(function() {
-                    if(new Date($(this).data('date')) < startDate && !$(this).hasClass('marked-for-removal')) {
-                        markedForRemoval.push(this);
-                        $(this).addClass('marked-for-removal');
-                        //$('.date-glider .dg-slider-slides').css('transform', 'translateX(-'+($('.date-glider .dg-slider-slides > li').outerWidth()*((days*2+1-daysShown)/2+markedForRemoval.length))+'px)');
-                        //$(this).remove();
-                    } else if(new Date($(this).data('date')) > endDate && !$(this).hasClass('marked-for-removal')) {
-                        markedForRemoval.push(this);
-                        $(this).addClass('marked-for-removal');
-                    }
-                });
+                // nothing interesting here
             }
             //console.log(dayNames[i.getDay()] + " -- " + i.getDate());
         }
         /* main loop - END */
+        
+        $(elem).find('.dg-slider-slides > li').each(function() {
+            if(new Date($(this).data('date')) < startDate && !$(this).hasClass('marked-for-removal')) {
+                markedForRemoval.push(this);
+                $(this).addClass('marked-for-removal');
+                //$('.date-glider .dg-slider-slides').css('transform', 'translateX(-'+($('.date-glider .dg-slider-slides > li').outerWidth()*((days*2+1-daysShown)/2+markedForRemoval.length))+'px)');
+                //$(this).remove();
+            } else if(new Date($(this).data('date')) > endDate && !$(this).hasClass('marked-for-removal')) {
+                markedForRemoval.push(this);
+                $(this).addClass('marked-for-removal');
+            }
+        });
         
         /* set width and position of slider */
         $(elem).find('.dg-slider-slides-container').width(daysShown*$(elem).find('.dg-slider-slides > li').outerWidth());
@@ -202,9 +204,9 @@
         dg.selectDate = function(middleDay) {
             $(this).find('.dg-slider-slides > li.middle').removeClass('middle');
             $(this).find('.dg-slider-slides > li.active').removeClass('active');
-            dateSliderUpdate(dg, settings, middleDay);
-            $(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('middle');
-            $(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('active');
+            dateSliderUpdate(dg, settings, middleDay, true);
+            //$(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('middle');
+            //$(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('active');
         }
         
         // Event handlers
@@ -219,21 +221,8 @@
             // callBack
             settings.onDateClick.call(this);
         });
-        /*
-        $(dg).on('click', '.dg-slider-nav', function() {
-            var activeNode = $(this).parent().find('.dg-slider-slides > li.active');
-            var activeDay = activeNode.data('date');
-            activeNode.removeClass('active');
-            if($(this).hasClass('dg-slider-next')) {
-                var activeDay = formatDate(new Date((new Date(activeDay)).getTime() + (6 * 24 * 60 * 60 * 1000)));
-            } else if($(this).hasClass('dg-slider-prev')) {
-                var activeDay = formatDate(new Date((new Date(activeDay)).getTime() - (6 * 24 * 60 * 60 * 1000)));
-            }
-            activeNode = $(this).parent().find('.dg-slider-slides').find(`[data-date='${activeDay}']`);
-            $(activeNode).addClass('active');
-            dateSliderUpdate(dg, settings, activeDay);
-        });
-        */
+        
+        // Sliding action - Nav button action
         $(dg).on('click', '.dg-slider-nav', function() {
             var middleNode = $(this).parent().find('.dg-slider-slides > li.middle');
             var middleDay = middleNode.data('date');
@@ -257,5 +246,3 @@
     };
  
 }( jQuery ));
-
-
