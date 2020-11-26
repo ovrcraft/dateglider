@@ -57,7 +57,7 @@
     }
     
     /* function to update the date slider */
-    function dateSliderUpdate(elem, options, activeDay='') {
+    function dateSliderUpdate(elem, options, middleDay='') {
        
         /* variable init */
         var days = 10;
@@ -69,22 +69,24 @@
         var markedForRemoval = [];
         var scrollBack = false;
         var today = new Date();
+        var setActive = false
         /* variable init - END */
         
         /* checking run-type */
-        if(activeDay === '') {
-            var activeDate = new Date(today.getTime());
+        if(middleDay === '') {
+            var middleDate = new Date(today.getTime());
+            setActive = true;
         } else {
-            var activeDate = new Date(activeDay);
+            var middleDate = new Date(middleDay);
         }
         /* checking run-type - END */
         
-        var startDate = new Date(activeDate.getTime() - (days * 24 * 60 * 60 * 1000));
-        var endDate = new Date(activeDate.getTime() + (days * 24 * 60 * 60 * 1000));
+        var startDate = new Date(middleDate.getTime() - (days * 24 * 60 * 60 * 1000));
+        var endDate = new Date(middleDate.getTime() + (days * 24 * 60 * 60 * 1000));
         
         /* updating the date header */
-        $(elem).find('.dg-header > .dg-header-from').text(formatDateString(new Date(activeDate.getTime() - ((daysShown-1)/2 * 24 * 60 * 60 * 1000))));
-        $(elem).find('.dg-header > .dg-header-to').text(formatDateString(new Date(activeDate.getTime() + ((daysShown-1)/2 * 24 * 60 * 60 * 1000))));
+        $(elem).find('.dg-header > .dg-header-from').text(formatDateString(new Date(middleDate.getTime() - ((daysShown-1)/2 * 24 * 60 * 60 * 1000))));
+        $(elem).find('.dg-header > .dg-header-to').text(formatDateString(new Date(middleDate.getTime() + ((daysShown-1)/2 * 24 * 60 * 60 * 1000))));
         /* updating the date header - END */
         
         /* main loop */
@@ -97,8 +99,11 @@
             if(index < 0 && options.datesFilter) {
                 classNames = classNames + 'disabled';
             }
-            if(formatDate(activeDate.toDateString()) === formatDate(i.toDateString())) {
-                classNames = classNames + ' active';
+            if(formatDate(middleDate.toDateString()) === formatDate(i.toDateString())) {
+                classNames = classNames + ' middle';
+                if(setActive) {
+                    classNames = classNames + ' active'; 
+                }
             }
 
             if($(elem).find('.dg-slider-slides').find(`[data-date='${formatDate(i.toDateString())}']`).length == 0) {
@@ -182,34 +187,39 @@
             header: true,
             availableDates: [],
             datesFilter: false,
-            activeDay: '',
+            middleDay: '',
+            activeOnScroll: false,
             onDateClick: function() {}
         }, options );
         
         // Apply options
         var dg = this;
         dateSliderInit(dg, settings);
-        dateSliderUpdate(dg, settings, settings.activeDay);
+        dateSliderUpdate(dg, settings, settings.middleDay);
                 
         
         // Public methods
-        dg.selectDate = function(activeDay) {
+        dg.selectDate = function(middleDay) {
+            $(this).find('.dg-slider-slides > li.middle').removeClass('middle');
             $(this).find('.dg-slider-slides > li.active').removeClass('active');
-            $(this).find('.dg-slider-slides').find(`[data-date='${activeDay}']`).addClass('active');
-            dateSliderUpdate(dg, settings, activeDay);
+            dateSliderUpdate(dg, settings, middleDay);
+            $(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('middle');
+            $(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('active');
         }
         
         // Event handlers
         $(dg).on('click', '.dg-slider-slides > li', function() {
-            var activeDay = $(this).data('date');
+            var middleDay = $(this).data('date');
+            $(this).parent().find('li').removeClass('middle');
             $(this).parent().find('li').removeClass('active');
+            $(this).addClass('middle');
             $(this).addClass('active');
-            dateSliderUpdate(dg, settings, activeDay);
+            dateSliderUpdate(dg, settings, middleDay);
             
             // callBack
             settings.onDateClick.call(this);
         });
-        
+        /*
         $(dg).on('click', '.dg-slider-nav', function() {
             var activeNode = $(this).parent().find('.dg-slider-slides > li.active');
             var activeDay = activeNode.data('date');
@@ -222,6 +232,26 @@
             activeNode = $(this).parent().find('.dg-slider-slides').find(`[data-date='${activeDay}']`);
             $(activeNode).addClass('active');
             dateSliderUpdate(dg, settings, activeDay);
+        });
+        */
+        $(dg).on('click', '.dg-slider-nav', function() {
+            var middleNode = $(this).parent().find('.dg-slider-slides > li.middle');
+            var middleDay = middleNode.data('date');
+            middleNode.removeClass('middle');
+            if(settings.activeOnScroll) {
+                middleNode.removeClass('active');
+            }
+            if($(this).hasClass('dg-slider-next')) {
+                var middleDay = formatDate(new Date((new Date(middleDay)).getTime() + (7 * 24 * 60 * 60 * 1000)));
+            } else if($(this).hasClass('dg-slider-prev')) {
+                var middleDay = formatDate(new Date((new Date(middleDay)).getTime() - (7 * 24 * 60 * 60 * 1000)));
+            }
+            middleNode = $(this).parent().find('.dg-slider-slides').find(`[data-date='${middleDay}']`);
+            $(middleNode).addClass('middle');
+            if(settings.activeOnScroll) {
+                $(middleNode).addClass('active');
+            }
+            dateSliderUpdate(dg, settings, middleDay);
         });
         return dg;
     };
