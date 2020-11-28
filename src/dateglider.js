@@ -109,10 +109,10 @@
             }
 
             if($(elem).find('.dg-slider-slides').find(`[data-date='${formatDate(i.toDateString())}']`).length == 0) {
-                if(function() { var tDate = new Date($(elem).find('.dg-slider-slides > li:last').data('date')); tDate.setHours(0,0,0,0); return tDate; }() < endDate) {
+                if(function(elem) { var tDate = new Date($(elem).find('.dg-slider-slides > li:last').data('date')); tDate.setHours(0,0,0,0); return tDate; }(elem) < endDate) {
                     scrollBack = true;
                     $(elem).find('.dg-slider-slides').append(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
-                } else if(function() { var tDate = new Date($(elem).find('.dg-slider-slides > li:first').data('date')); tDate.setHours(0,0,0,0); return tDate; }() > startDate || preAppending) {
+                } else if(function(elem) { var tDate = new Date($(elem).find('.dg-slider-slides > li:first').data('date')); tDate.setHours(0,0,0,0); return tDate; }(elem) > startDate || preAppending) {
                     scrollBack = false;
                     storedForAddition.push(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
                     /*
@@ -137,12 +137,12 @@
         /* main loop - END */
         
         $(elem).find('.dg-slider-slides > li').each(function() {
-            if(function() { var tDate = new Date($(this).data('date')); tDate.setHours(0,0,0,0); return tDate; }() < startDate && !$(this).hasClass('marked-for-removal')) {
+            if(function(elem) { var tDate = new Date($(elem).data('date')); tDate.setHours(0,0,0,0); return tDate; }(this) < startDate && !$(this).hasClass('marked-for-removal')) {
                 markedForRemoval.push(this);
                 $(this).addClass('marked-for-removal');
                 //$('.date-glider .dg-slider-slides').css('transform', 'translateX(-'+($('.date-glider .dg-slider-slides > li').outerWidth()*((days*2+1-daysShown)/2+markedForRemoval.length))+'px)');
                 //$(this).remove();
-            } else if(function() { var tDate = new Date($(this).data('date')); tDate.setHours(0,0,0,0); return tDate; }() > endDate && !$(this).hasClass('marked-for-removal')) {
+            } else if(function(elem) { var tDate = new Date($(elem).data('date')); tDate.setHours(0,0,0,0); return tDate; }(this) > endDate && !$(this).hasClass('marked-for-removal')) {
                 markedForRemoval.push(this);
                 $(this).addClass('marked-for-removal');
             }
