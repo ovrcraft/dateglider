@@ -68,21 +68,23 @@
         var storedForAddition = [];
         var markedForRemoval = [];
         var scrollBack = false;
-        var today = new Date();
+        var today = new Date(); today.setHours(0,0,0,0);
         var setActive = typeof setActive=='undefined'?false:setActive;
         /* variable init - END */
         
         /* checking run-type */
         if(middleDay === '') {
             var middleDate = new Date(today.getTime());
+            middleDate.setHours(0,0,0,0);
             setActive = true;
         } else {
             var middleDate = new Date(middleDay);
+            middleDate.setHours(0,0,0,0);
         }
         /* checking run-type - END */
         
-        var startDate = new Date(middleDate.getTime() - (days * 24 * 60 * 60 * 1000));
-        var endDate = new Date(middleDate.getTime() + (days * 24 * 60 * 60 * 1000));
+        var startDate = new Date(middleDate.getTime() - (days * 24 * 60 * 60 * 1000)); startDate.setHours(0,0,0,0);
+        var endDate = new Date(middleDate.getTime() + (days * 24 * 60 * 60 * 1000)); endDate.setHours(0,0,0,0);
         
         /* updating the date header */
         $(elem).find('.dg-header > .dg-header-from').text(formatDateString(new Date(middleDate.getTime() - ((daysShown-1)/2 * 24 * 60 * 60 * 1000))));
@@ -107,10 +109,10 @@
             }
 
             if($(elem).find('.dg-slider-slides').find(`[data-date='${formatDate(i.toDateString())}']`).length == 0) {
-                if(new Date($(elem).find('.dg-slider-slides > li:last').data('date')) < endDate) {
+                if(function() { var tDate = new Date($(elem).find('.dg-slider-slides > li:last').data('date')); tDate.setHours(0,0,0,0); return tDate; }() < endDate) {
                     scrollBack = true;
                     $(elem).find('.dg-slider-slides').append(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
-                } else if(new Date($(elem).find('.dg-slider-slides > li:first').data('date')) > startDate || preAppending) {
+                } else if(function() { var tDate = new Date($(elem).find('.dg-slider-slides > li:first').data('date')); tDate.setHours(0,0,0,0); return tDate; }() > startDate || preAppending) {
                     scrollBack = false;
                     storedForAddition.push(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
                     /*
@@ -135,12 +137,12 @@
         /* main loop - END */
         
         $(elem).find('.dg-slider-slides > li').each(function() {
-            if(new Date($(this).data('date')) < startDate && !$(this).hasClass('marked-for-removal')) {
+            if(function() { var tDate = new Date($(this).data('date')); tDate.setHours(0,0,0,0); return tDate; }() < startDate && !$(this).hasClass('marked-for-removal')) {
                 markedForRemoval.push(this);
                 $(this).addClass('marked-for-removal');
                 //$('.date-glider .dg-slider-slides').css('transform', 'translateX(-'+($('.date-glider .dg-slider-slides > li').outerWidth()*((days*2+1-daysShown)/2+markedForRemoval.length))+'px)');
                 //$(this).remove();
-            } else if(new Date($(this).data('date')) > endDate && !$(this).hasClass('marked-for-removal')) {
+            } else if(function() { var tDate = new Date($(this).data('date')); tDate.setHours(0,0,0,0); return tDate; }() > endDate && !$(this).hasClass('marked-for-removal')) {
                 markedForRemoval.push(this);
                 $(this).addClass('marked-for-removal');
             }
