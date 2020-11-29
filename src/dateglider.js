@@ -130,7 +130,7 @@
                     $(elem).find('.dg-slider-slides').append(`<li data-date="${formatDate(i.toDateString())}" class="${classNames}"><small>${dayNames[i.getDay()]}</small><span>${i.getDate()}</span></li>`);
                 }
             } else {
-                // nothing interesting here
+                $(elem).find('.dg-slider-slides').find(`[data-date='${formatDate(i.toDateString())}']`).addClass(classNames);
             }
             //console.log(dayNames[i.getDay()] + " -- " + i.getDate());
         }
