@@ -80,6 +80,7 @@
             var middleDate = new Date(today.getTime());
             middleDate.setHours(0,0,0,0);
             setActive = true;
+            window.dateGliderLastSelectedDate = formatDate(middleDate.toDateString());
         } else {
             var middleDate = new Date(middleDay.replace(/-/g, '/'));
             middleDate.setHours(0,0,0,0);
