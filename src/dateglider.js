@@ -1,5 +1,8 @@
 (function ( $ ) {
     
+    /* global variables */
+    window.dateGliderLastSelectedDate = '';
+    
     /* function repository */
     /* function to output formatted date pattern for the slider */
     function formatDate(date) {
@@ -213,6 +216,7 @@
             dateSliderUpdate(dg, settings, middleDay, true);
             //$(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('middle');
             //$(this).find('.dg-slider-slides').find(`[data-date='${middleDay}']`).addClass('active');
+            window.dateGliderLastSelectedDate = middleDay;
         }
         
         // Event handlers
@@ -223,6 +227,7 @@
             $(this).addClass('middle');
             $(this).addClass('active');
             dateSliderUpdate(dg, settings, middleDay);
+            window.dateGliderLastSelectedDate = middleDay;
             
             // callBack
             settings.onDateClick.call(this);
@@ -245,6 +250,10 @@
             $(middleNode).addClass('middle');
             if(settings.activeOnScroll) {
                 $(middleNode).addClass('active');
+            } else {
+                if(middleNode.attr('data-date') == window.dateGliderLastSelectedDate) {
+                    $(middleNode).addClass('active');
+                }
             }
             dateSliderUpdate(dg, settings, middleDay);
         });
