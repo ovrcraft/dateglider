@@ -243,9 +243,9 @@
                 middleNode.removeClass('active');
             }
             if($(this).hasClass('dg-slider-next')) {
-                var middleDay = formatDate(new Date((new Date(middleDay)).getTime() + (7 * 24 * 60 * 60 * 1000)));
+                var middleDay = formatDate(new Date((new Date(middleDay.replace(/-/g, '/'))).getTime() + (7 * 24 * 60 * 60 * 1000)));
             } else if($(this).hasClass('dg-slider-prev')) {
-                var middleDay = formatDate(new Date((new Date(middleDay)).getTime() - (7 * 24 * 60 * 60 * 1000)));
+                var middleDay = formatDate(new Date((new Date(middleDay.replace(/-/g, '/'))).getTime() - (7 * 24 * 60 * 60 * 1000)));
             }
             middleNode = $(this).parent().find('.dg-slider-slides').find(`[data-date='${middleDay}']`);
             $(middleNode).addClass('middle');
